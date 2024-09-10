@@ -55,7 +55,7 @@ export const Incident = () => {
                             <option value="resuelto">Resuelto</option>
                         </select>
                     </label>
-                    <label className='text-blue-600 flex items-center gap-2'>
+                    {/* <label className='text-blue-600 flex items-center gap-2'>
                         Fecha:
                         Desde
                         <input
@@ -71,7 +71,7 @@ export const Incident = () => {
                             type="date"
                             onChange={handleFilterChange}
                         />
-                    </label>
+                    </label> */}
                 </div>
             </header>
             <section className="overflow-x-auto w-full">
@@ -79,28 +79,20 @@ export const Incident = () => {
                     <thead>
                         <tr className="bg-blue-100 border-b border-blue-300">
                             <th className="py-2 px-4 text-center text-blue-600">Asunto</th>
-                            <th className="py-2 px-4 text-center text-blue-600">Ubicación</th>
+                            <th className="py-2 px-4 text-center text-blue-600">Descripción</th>
                             <th className="py-2 px-4 text-center text-blue-600">Tipo</th>
                             <th className="py-2 px-4 text-center text-blue-600">Estado</th>
-                            <th className="py-2 px-4 text-center text-blue-600">Acciones</th>
+                            <th className="py-2 px-4 text-center text-blue-600">Accion</th>
                         </tr>
                     </thead>
                     <tbody>
                         {reports.map((item) => (
-                            console.log(item),
                             <tr key={item.id} className="relative text-black border-b border-blue-300 hover:bg-blue-50 transition-colors">
                                 <td className="py-2 px-4 text-center">{item.asunto}</td>
                                 <td className="py-2 px-4 text-center">{item.descripcion}</td>
                                 <td className="py-2 px-4 text-center">{item.tipo}</td>
                                 <td className="py-2 px-4 text-center">{item.estado}</td>
                                 <td className="py-2 px-4 text-center flex justify-center gap-2">
-                                    {/* <Link
-                                        to={`/dashboard/edit`}
-                                        onClick={() => handleUpdate(item.id)}
-                                        className="text-blue-500 cursor-pointer hover:underline"
-                                    >
-                                        Editar
-                                    </Link> */}
                                     <button
                                         className="text-blue-500 cursor-pointer hover:underline"
                                         onClick={() => handleDelete(item.id)}

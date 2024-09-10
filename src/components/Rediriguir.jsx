@@ -1,15 +1,19 @@
-import  { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 
-function Rediriguir() {
-  const [location,setLocation] = useLocation();
+function Redirigir() {
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
-    if(location === '/')
-    setLocation('/login');
+    const token = localStorage.getItem('token');
+    const id = localStorage.getItem('id');
+
+    if (!token || !id) {
+      setLocation('/login');
+    }
   }, [setLocation]);
 
-  return null; 
+  return null;
 }
 
-export default Rediriguir;
+export default Redirigir;

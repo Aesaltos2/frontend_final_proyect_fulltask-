@@ -3,6 +3,11 @@ import { useLocation } from 'wouter';
 
 export const ProtectRouter = ({ children }) => {
     const [, setLocation] = useLocation();
+
+    useEffect(() => {
+        localStorage.clear();
+    }, []);
+
     const token = localStorage.getItem('token');
 
     useEffect(() => {

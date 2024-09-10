@@ -38,7 +38,8 @@ export const IncidentAll = () => {
         if (e.target.value === '') {
             setReports(reportAll);
         } else {
-            const filterArray = reportAll.filter((rp) => rp.status === e.target.value);
+            const filterArray = reportAll.filter((rp) => rp.estado === e.target.value);
+            console.log(filterArray);
             setReports(filterArray);
         }
     };
@@ -69,7 +70,7 @@ export const IncidentAll = () => {
                             <option value="resuelto">Resuelto</option>
                         </select>
                     </label>
-                    <section>
+                    {/* <section>
                         <label className='text-blue-600'>
                             Desde:
                             <input className='text-black px-2 border border-blue-300 rounded-md' onChange={filterDesde} type="date" />
@@ -78,7 +79,7 @@ export const IncidentAll = () => {
                             Hasta:
                             <input className='text-black px-2 border border-blue-300 rounded-md' onChange={filterHasta} type="date" />
                         </label>
-                    </section>
+                    </section> */}
                 </section>
             </section>
             <section className="overflow-x-auto w-full">
@@ -89,8 +90,7 @@ export const IncidentAll = () => {
                             <th className="py-2 px-4 text-center text-blue-600">Descripción</th>
                             <th className="py-2 px-4 text-center text-blue-600">Tipo</th>
                             <th className="py-2 px-4 text-center text-blue-600">Estado</th>
-                            <th className="py-2 px-4 text-center text-blue-600"></th>
-                            <th className="py-2 px-4 text-center text-blue-600"></th>
+                            <th className="py-2 px-4 text-center text-blue-600">Accion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,12 +106,12 @@ export const IncidentAll = () => {
                                                 required
                                                 className='px-4 outline-none rounded-xl bg-blue-100 w-full h-10 cursor-pointer text-black font-normal'
                                                 type="text"
-                                                name='status'
-                                                defaultValue={item.status}
+                                                name='estado'
+                                                defaultValue={item.estado}
                                                 onChange={(e) => handleUpdate(e, item.id)}
                                             >
                                                 <option value="pendiente">Pendiente</option>
-                                                <option value="en_progreso">Progreso</option>
+                                                <option value="en_proceso">Progreso</option>
                                                 <option value="resuelto">Resuelto</option>
                                             </select>
                                         </td>
