@@ -31,9 +31,7 @@ export const EditUser = () => {
 
                         <label className=' p-2 flex flex-col py-4 items-start' > Apellido: <input  placeholder='Apellido de nuevo usuario' defaultValue={infoUser.apellido} className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem] text-black font-normal' type="text" name='apellido' /></label>
 
-                        <label className='  p-2 flex flex-col py-4 items-start uppercase'> dni: <input  placeholder='DNI de nuevo usuario' defaultValue={infoUser.dni} className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem] text-black font-normal' type="number" min={10000000} name='dni' /></label>
-
-                        <label className='  p-2 flex flex-col py-4 items-start '> Telefono: <input  placeholder='Telefono de nuevo usuario' defaultValue={infoUser.telefono} className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem] text-black font-normal' type="tel" name='telefono' /></label>
+                        <label className='  p-2 flex flex-col py-4 items-start '> Telefono: <input  placeholder='Telefono de nuevo usuario' defaultValue={infoUser.numero_contacto} className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem] text-black font-normal' type="tel" name='numero_usuario' /></label>
 
                        {infoUser.rol === 'administrador' &&
                         <label className=' p-2 flex flex-col py-4 items-start' > Rol: <select  className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem]  text-black font-normal' defaultValue={infoUser.rol} type="text" name='rol'>
@@ -44,8 +42,6 @@ export const EditUser = () => {
                         </label>}
 
                         <label className=' p-2 flex flex-col py-4 items-start' > Correo: <input  className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem]  text-black font-normal ' defaultValue={infoUser.email} type="email" name='email' placeholder='Correo de nuevo usuario' /></label>
-
-                        <label className=' p-2 flex flex-col py-4 items-start' > Usuario: <input  className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem]  text-black font-normal ' defaultValue={infoUser.usuario} type="text" name='usuario' placeholder='Usuario con el que ingresara a la Pagina' /></label>
 
                         <label className=' p-2 flex flex-col py-4 items-start' > Contraseña: <input  className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem]  text-black font-normal ' type="text" name='password' placeholder='Contraseña con la que ingresara a la Pagina' /></label>
 
