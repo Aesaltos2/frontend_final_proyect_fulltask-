@@ -31,6 +31,8 @@ export const EditUser = () => {
 
                         <label className=' p-2 flex flex-col py-4 items-start' > Apellido: <input  placeholder='Apellido de nuevo usuario' defaultValue={infoUser.apellido} className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem] text-black font-normal' type="text" name='apellido' /></label>
 
+<label className=' p-2 flex flex-col py-4 items-start' > Usuario: <input  className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem]  text-black font-normal ' defaultValue={infoUser.departamento} type="text" name='departamento' placeholder='Departamento' /></label>
+
                         <label className='  p-2 flex flex-col py-4 items-start '> Telefono: <input  placeholder='Telefono de nuevo usuario' defaultValue={infoUser.numero_contacto} className='px-4 outline-none rounded-xl bg-orange-100 w-full h-[3rem] text-black font-normal' type="tel" name='numero_usuario' /></label>
 
                        {infoUser.rol === 'administrador' &&
