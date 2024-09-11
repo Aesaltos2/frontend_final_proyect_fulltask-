@@ -1,18 +1,36 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Link } from 'wouter';
 import { AuthContext } from '../context/AuthContex';
 import { ChevronDown, Users, FileText, UserPlus, Home, LogOut, User } from 'lucide-react';
 
+const useOutsideClick = (ref, callback) => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref, callback]);
+};
+
 const OpcionesAdm = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  
   const options = [
     { to: '/dashboard/users', icon: Users, text: 'Usuarios' },
     { to: '/dashboard/incidentAll', icon: FileText, text: 'Reportes' },
     { to: '/dashboard/create', icon: UserPlus, text: 'Crear Usuario' },
   ];
 
+  useOutsideClick(dropdownRef, () => setIsOpen(false));
+
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded transition duration-300"
@@ -36,13 +54,17 @@ const OpcionesAdm = () => {
 
 const OpcionesUser = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const options = [
     { to: '/dashboard/report', text: 'Reportar un problema' },
     { to: '/dashboard/incident', text: 'Ver mis reportes' },
   ];
 
+  useOutsideClick(dropdownRef, () => setIsOpen(false));
+
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300"

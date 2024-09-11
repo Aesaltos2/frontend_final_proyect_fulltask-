@@ -1,32 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AdminContext } from '../../context/AdminContex';
-import { Link } from 'wouter';
-import dayjs from 'dayjs';
 
 export const Incident = () => {
     const { reportFrUs, delReport } = useContext(AdminContext);
     const [reports, setReports] = useState([]);
+    const [statusFilter, setStatusFilter] = useState('');
 
     useEffect(() => {
-        if (reportFrUs) setReports(reportFrUs);
-    }, [reportFrUs]);
+        if (reportFrUs) {
+            // Aplicar el filtro inicial basado en el estado
+            applyFilter(statusFilter);
+        }
+    }, [reportFrUs, statusFilter]);
+
+    const applyFilter = (status) => {
+        if (status === '') {
+            setReports(reportFrUs); // Mostrar todos los reportes
+        } else {
+            const filteredReports = reportFrUs.filter(rp => translateStatus(rp.estado) === status);
+            setReports(filteredReports);
+        }
+    };
 
     const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-
-        let filteredReports = [...reportFrUs];
-
-        if (name === 'status') {
-            filteredReports = value ? filteredReports.filter(rp => rp.status === value) : filteredReports;
-        } else if (name === 'desde') {
-            const fechaDesde = dayjs(value).startOf('day');
-            filteredReports = filteredReports.filter(rp => dayjs(rp.date).isSameOrAfter(fechaDesde));
-        } else if (name === 'hasta') {
-            const fechaHasta = dayjs(value).endOf('day');
-            filteredReports = filteredReports.filter(rp => dayjs(rp.date).isSameOrBefore(fechaHasta));
-        }
-
-        setReports(filteredReports);
+        const value = e.target.value;
+        setStatusFilter(value);
+        applyFilter(reverseTranslateStatus(value));
     };
 
     const handleUpdate = (id) => {
@@ -35,6 +34,34 @@ export const Incident = () => {
 
     const handleDelete = async (id) => {
         await delReport.mutateAsync(id);
+    };
+
+    // Función para traducir el valor del estado a la etiqueta mostrada en el filtro
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'pendiente':
+                return 'Pendiente';
+            case 'en_proceso':
+                return 'Progreso';
+            case 'resuelta':
+                return 'Resuelto';
+            default:
+                return '';
+        }
+    };
+
+    // Función para traducir la etiqueta del filtro al valor de estado
+    const reverseTranslateStatus = (label) => {
+        switch (label) {
+            case 'Pendiente':
+                return 'pendiente';
+            case 'Progreso':
+                return 'en_proceso';
+            case 'Resuelto':
+                return 'resuelta';
+            default:
+                return ''; // Valor para "Todos"
+        }
     };
 
     return (
@@ -48,30 +75,14 @@ export const Incident = () => {
                             name='status'
                             className='rounded-xl border border-blue-300 p-2 outline-none text-black'
                             onChange={handleFilterChange}
+                            value={statusFilter}
                         >
                             <option value="">Todos</option>
-                            <option value="pendiente">Pendiente</option>
-                            <option value="progreso">Progreso</option>
-                            <option value="resuelto">Resuelto</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Progreso">Progreso</option>
+                            <option value="Resuelto">Resuelto</option>
                         </select>
                     </label>
-                    {/* <label className='text-blue-600 flex items-center gap-2'>
-                        Fecha:
-                        Desde
-                        <input
-                            name='desde'
-                            className='text-black px-2 border border-blue-300 rounded-md'
-                            type="date"
-                            onChange={handleFilterChange}
-                        />
-                        Hasta
-                        <input
-                            name='hasta'
-                            className='text-black px-2 border border-blue-300 rounded-md'
-                            type="date"
-                            onChange={handleFilterChange}
-                        />
-                    </label> */}
                 </div>
             </header>
             <section className="overflow-x-auto w-full">
@@ -82,7 +93,7 @@ export const Incident = () => {
                             <th className="py-2 px-4 text-center text-blue-600">Descripción</th>
                             <th className="py-2 px-4 text-center text-blue-600">Tipo</th>
                             <th className="py-2 px-4 text-center text-blue-600">Estado</th>
-                            <th className="py-2 px-4 text-center text-blue-600">Accion</th>
+                            <th className="py-2 px-4 text-center text-blue-600">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,7 +102,7 @@ export const Incident = () => {
                                 <td className="py-2 px-4 text-center">{item.asunto}</td>
                                 <td className="py-2 px-4 text-center">{item.descripcion}</td>
                                 <td className="py-2 px-4 text-center">{item.tipo}</td>
-                                <td className="py-2 px-4 text-center">{item.estado}</td>
+                                <td className="py-2 px-4 text-center">{translateStatus(item.estado)}</td>
                                 <td className="py-2 px-4 text-center flex justify-center gap-2">
                                     <button
                                         className="text-blue-500 cursor-pointer hover:underline"

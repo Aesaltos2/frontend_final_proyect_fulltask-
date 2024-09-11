@@ -4,28 +4,19 @@ import dayjs from 'dayjs';
 
 export const IncidentAll = () => {
     const { reportAll, updateStatus, delReport } = useContext(AdminContext);
-    const [expandedId, setExpandedId] = useState(null);
     const [reports, setReports] = useState([]);
 
     useEffect(() => {
         if (reportAll) setReports(reportAll);
     }, [reportAll]);
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        return date.toLocaleDateString('es-ES', options);
-    };
-
-    const handleRowClick = (id) => {
-        setExpandedId(expandedId === id ? null : id);
-    };
-
     const handleUpdate = async (e, id) => {
         localStorage.setItem('idR', id);
 
-        const data = new FormData();
-        data.append('status', e.target.value);
+        const data = {
+            estado: e.target.value,
+        };
+        console.log(data);
 
         await updateStatus.mutateAsync(data);
     };
@@ -39,21 +30,8 @@ export const IncidentAll = () => {
             setReports(reportAll);
         } else {
             const filterArray = reportAll.filter((rp) => rp.estado === e.target.value);
-            console.log(filterArray);
             setReports(filterArray);
         }
-    };
-
-    const filterDesde = (e) => {
-        const fecha = dayjs(e.target.value).format('YYYY-MM-DD');
-        const filterArray = reportAll.filter((rp) => dayjs(rp.date).format('YYYY-MM-DD') >= fecha);
-        setReports(filterArray);
-    };
-
-    const filterHasta = (e) => {
-        const fecha = dayjs(e.target.value).format('YYYY-MM-DD');
-        const filterArray = reportAll.filter((rp) => dayjs(rp.date).format('YYYY-MM-DD') <= fecha);
-        setReports(filterArray);
     };
 
     return (
@@ -66,20 +44,11 @@ export const IncidentAll = () => {
                         <select className='rounded-xl border border-blue-300 p-2 outline-none text-black' onChange={statusFilter}>
                             <option value="">Todos</option>
                             <option value="pendiente">Pendiente</option>
-                            <option value="en_progreso">Progreso</option>
-                            <option value="resuelto">Resuelto</option>
+                            <option value="en_proceso">Progreso</option>
+                            <option value="resuelta">Resuelto</option>
                         </select>
                     </label>
-                    {/* <section>
-                        <label className='text-blue-600'>
-                            Desde:
-                            <input className='text-black px-2 border border-blue-300 rounded-md' onChange={filterDesde} type="date" />
-                        </label>
-                        <label className='text-blue-600'>
-                            Hasta:
-                            <input className='text-black px-2 border border-blue-300 rounded-md' onChange={filterHasta} type="date" />
-                        </label>
-                    </section> */}
+
                 </section>
             </section>
             <section className="overflow-x-auto w-full">
@@ -112,7 +81,7 @@ export const IncidentAll = () => {
                                             >
                                                 <option value="pendiente">Pendiente</option>
                                                 <option value="en_proceso">Progreso</option>
-                                                <option value="resuelto">Resuelto</option>
+                                                <option value="resuelta">Resuelto</option>
                                             </select>
                                         </td>
                                         <td className="py-2 px-4 text-center cursor-pointer" colSpan={2}>

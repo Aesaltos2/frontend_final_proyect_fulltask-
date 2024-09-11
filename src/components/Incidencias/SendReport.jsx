@@ -7,18 +7,30 @@ export const Report = () => {
     const { createReport } = useContext(AdminContext);
     const usuario_id = localStorage.getItem('userId');
 
+    const handleFileChange = (e) => {
+        const files = e.target.files;
+        if (files.length > 3) {
+            setError('Puedes seleccionar un máximo de 3 imágenes.');
+            e.target.value = null;
+        } else {
+            setError('');
+        }
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess(false);
         const formData = new FormData(e.target);
-        
+
         const reportData = {
-            usuario_id: parseInt(usuario_id), 
+            usuario_id: parseInt(usuario_id),
             asunto: formData.get('asunto'),
             descripcion: formData.get('descripcion'),
             tipo: formData.get('tipo'),
-            estado: 'en_proceso'
+            estado: 'Pendiente',
+            imagenes: formData.get('imagenes')
         };
 
         try {
@@ -83,10 +95,16 @@ export const Report = () => {
                             <option value="otros">Otros</option>
                         </select>
                     </label>
+
+                    <label className=' px-4 bg-blue-100  flex flex-col py-4 items-center justify-center h-[4rem] rounded-xl w-full text-black ' >Evidencias maximo 3 fotos (Opcional).
+                        <input className='px-4 outline-none text-black font-normal h-[3rem]  ' type="file" name="imagenes" accept="image/*" multiple onChange={handleFileChange}
+                        />
+
+                    </label>
                 </div>
                 {error && <p className='text-red-500 text-sm'>{error}</p>}
-                <button 
-                    className='w-full py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500' 
+                <button
+                    className='w-full py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500'
                     type='submit'
                     disabled={createReport.isLoading}
                 >
